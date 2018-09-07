@@ -84,7 +84,7 @@ app.post('/api/ideas', function(req, res, next) {
 
 
 
-var port = process.ENV.port || 3001;
+var port = 3001;
 app.listen(port, function() {
 	console.log("running on port 3001")
 });
