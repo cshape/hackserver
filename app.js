@@ -13,17 +13,15 @@ const expressValidator = require('express-validator');
 var Ideas = require('./models/ideas.js');
 var Users = require('./models/users.js');
 
-// var indexRouter = require('./routes/index');
-// var ideasRouter = require('./routes/ideas');
-
 var app = express();
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // Set up default mongoose connection
-var mongoDB = "mongodb://cshape:Slaveship1%21@ds245082.mlab.com:45082/hackvoting";
-mongoose.connect("mongodb://cshape:Slaveship1%21@ds245082.mlab.com:45082/hackvoting", { useNewUrlParser: true });
+var mongoDB = process.env.MONGOLAB_URI;
+
+mongoose.connect(mongoDB, { useNewUrlParser: true});
 
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
@@ -38,21 +36,10 @@ db.on('error', console.error.bind(console, 'wat is de error:'));
 //root directory
 
 app.use(function (req, res, next) {
-
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', req.headers.origin );
-
-    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Origin', '*' );
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
     next();
 });
 
@@ -84,7 +71,7 @@ app.post('/api/ideas', function(req, res, next) {
 
 
 
-var port = 3001;
+var port = process.env.PORT || 3001;
 app.listen(port, function() {
 	console.log("running on port 3001")
 });
