@@ -14,7 +14,7 @@ var IdeaSchema = new Schema({
 IdeaSchema
 .virtual('url')
 .get(function () {
-  return '/ideas/' + this._id;
+  return '/ideas/' + this.name;
 });
 
 //Export function to create "IdeaModel" model class

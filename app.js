@@ -44,7 +44,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', function(req, res) {
-  res.json('you did it');
+  res.json('index');
 });
 
 //ideas
@@ -67,8 +67,15 @@ app.post('/api/ideas', function(req, res, next) {
   });
 });
 
-
-
+app.delete('/api/ideas', function(req, res) {
+  console.log(req);
+  Ideas.deleteOne({ name: `${req.body.name}` }
+  , function(err) {
+  	if (err)
+  		res.send("this is your goddam error: ", err);
+  	console.log("idea deleted")
+  });
+});
 
 
 var port = process.env.PORT || 3001;
