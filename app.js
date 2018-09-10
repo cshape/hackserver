@@ -44,11 +44,9 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', function(req, res) {
-<<<<<<< HEAD
+
   res.json('index');
-=======
-  res.json('you did it');
->>>>>>> bc7a27b5be91d15c92226af9b943c6f65878dc45
+
 });
 
 //ideas
@@ -71,7 +69,6 @@ app.post('/api/ideas', function(req, res, next) {
   });
 });
 
-<<<<<<< HEAD
 app.delete('/api/ideas', function(req, res) {
   console.log(req);
   Ideas.deleteOne({ name: `${req.body.name}` }
@@ -81,10 +78,7 @@ app.delete('/api/ideas', function(req, res) {
   	console.log("idea deleted")
   });
 });
-=======
 
-
->>>>>>> bc7a27b5be91d15c92226af9b943c6f65878dc45
 
 
 var port = process.env.PORT || 3001;
