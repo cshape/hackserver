@@ -64,7 +64,7 @@ app.post('/api/users/signup', (req, res, next) => {
     const { body } = req;
     const { password } = body;
     let { email } = body;
-    
+
     if (!email) {
       return res.send({
         success: false,
@@ -196,13 +196,19 @@ app.get('/api/ideas', function(req, res) {
     })
   });
 
+  app.get('/api/idea/', function(req, res) {
+    Ideas.findById('5ba17ef5e1a5dd0014588346').then(idea => {
+      res.json(idea);
+      })
+  });
 //post new idea
 
 app.post('/api/ideas', function(req, res, next) {
   Ideas.create({
     name: req.body.name,
     leader: req.body.leader,
-    description: req.body.description
+    description: req.body.description,
+    id: req.body.id
   }).then(idea => {
     res.json(idea)
   });
