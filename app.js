@@ -19,7 +19,7 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // Set up default mongoose connection
-var mongoDB = process.env.MONGOLAB_URI;
+var mongoDB = "mongodb://cshape:Slaveship1!@ds245082.mlab.com:45082/hackvoting";
 
 mongoose.connect(mongoDB, { useNewUrlParser: true});
 
