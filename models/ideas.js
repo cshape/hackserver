@@ -5,10 +5,14 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var IdeaSchema = new Schema({
-    name: String,
-    leader: String,
-    description: String
+  name: String,
+  leader: String,
+  description: String,
+  members: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+  comments: String,
+  votes: Number,
 });
+
 
 // Virtual for idea's URL
 IdeaSchema
