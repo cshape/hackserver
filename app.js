@@ -226,9 +226,8 @@ app.post('/api/ideas', function(req, res, next) {
   });
 });
 
-app.delete('/api/ideas', function(req, res) {
-  console.log(req);
-  Ideas.deleteOne({ name: `${req.body.name}` }
+app.delete('/api/idea/:id', function(req, res) {
+  Ideas.deleteOne({ _id: req.params.id }
   , function(err) {
   	if (err)
   		res.send("this is your goddam error: ", err);
