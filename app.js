@@ -196,11 +196,23 @@ app.get('/api/ideas', function(req, res) {
     })
   });
 
-  app.get('/api/idea/', function(req, res) {
-    Ideas.findById('5ba17ef5e1a5dd0014588346').then(idea => {
-      res.json(idea);
-      })
+  app.get('/api/idea/:id', function(req, res) {
+    console.log(req.params.id)
+    // idea = Ideas.findById(req.params.id);
+    // res.json(idea);
+
+    Ideas.findById(req.params.id).exec(function(err, Ideas){
+      res.send(Ideas);
+    });
+
+    // Ideas.findById(req.params).then(idea => {
+    //   res.json(idea);
+    //   });
+    //   .catch(function () {
+    //     console.log("Promise Rejected");
+    // });
   });
+
 //post new idea
 
 app.post('/api/ideas', function(req, res, next) {
