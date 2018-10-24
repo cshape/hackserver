@@ -5,6 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+var passport = require('passport');
+var Strategy = require('passport-google-oauth20').Strategy;
+var cors = require('cors');
+var GoogleTokenStrategy = require('passport-google-token').Strategy;
+var config = require('./config');
+var { generateToken, sendToken } = require('./utils/token.utils');
+
 
 const parseurl = require('parseurl');
 const bodyParser = require('body-parser');
@@ -16,8 +23,18 @@ var Users = require('./models/users.js');
 
 var app = express();
 
+var corsOption = {
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['x-auth-token']
+};
+app.use(cors(corsOption));
+
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
+
 
 // Set up default mongoose connection
 var mongoDB = "mongodb://cshape:Slaveship1!@ds245082.mlab.com:45082/hackvoting";
@@ -58,135 +75,33 @@ app.get('/api/users', function(req, res) {
     })
   });
 
-//sign up user
+//passport authorization
 
-app.post('/api/users/signup', (req, res, next) => {
-    const { body } = req;
-    const { password } = body;
-    let { email } = body;
-
-    if (!email) {
-      return res.send({
-        success: false,
-        message: 'Error: Email cannot be blank.'
-      });
-    }
-    if (!password) {
-      return res.send({
-        success: false,
-        message: 'Error: Password cannot be blank.'
-      });
-    }
-    email = email.toLowerCase();
-    email = email.trim();
-    // Steps:
-    // 1. Verify email doesn't exist
-    // 2. Save
-    Users.find({
-      email: email
-    }, (err, previousUsers) => {
-      if (err) {
-        return res.send({
-          success: false,
-          message: 'Error: sucks to be you, man.'
-        });
-      } else if (previousUsers.length > 0) {
-        return res.send({
-          success: false,
-          message: 'Error: Account already exist.'
-        });
-      }
-      // Save the new user
-      const newUser = new Users();
-      newUser.email = email;
-      newUser.password = newUser.generateHash(password);
-      newUser.save((err, user) => {
-        if (err) {
-          return res.send({
-            success: false,
-            message: 'Error: Server error u bad man'
-          });
-        }
-        return res.send({
-          success: true,
-          message: 'Signed up'
-        });
-      });
-    });
-  });
-
-// sign in
-
-app.post('/api/users/signin', (req, res, next) => {
-    const { body } = req;
-    const {
-      password
-    } = body;
-    let {
-      email
-    } = body;
-    if (!email) {
-      return res.send({
-        success: false,
-        message: 'Error: Email cannot be blank.'
-      });
-    }
-    if (!password) {
-      return res.send({
-        success: false,
-        message: 'Error: Password cannot be blank.'
-      });
-    }
-    email = email.toLowerCase();
-    email = email.trim();
-    Users.find({
-      email: email
-    }, (err, users) => {
-      if (err) {
-        console.log('err 2:', err);
-        return res.send({
-          success: false,
-          message: 'Error: server error'
-        });
-      }
-      if (users.length != 1) {
-        return res.send({
-          success: false,
-          message: 'Error: Invalid'
-        });
-      }
-      const user = users[0];
-      if (!user.validPassword(password)) {
-        return res.send({
-          success: false,
-          message: 'Error: Invalid'
-        });
-      }
-      // Otherwise correct user
-      return res.send({
-        success: true,
-        message: 'Success! Logged in!'
-      })
-    });
-  });
+//passport setup
 
 
+passport.use(new GoogleTokenStrategy({
+            clientID: config.googleAuth.clientID,
+            clientSecret: config.googleAuth.clientSecret
+        },
+        function (accessToken, refreshToken, profile, done) {
+            Users.upsertGoogleUser(accessToken, refreshToken, profile, function(err, user) {
+                return done(err, user);
+            });
+        }));
 
+app.post('/api/google',
+  passport.authenticate('google-token', {session: false}), function(req, res, next) {
+    if (!req.user) {
+      console.log("some fuckin error");
+      return res.send(401, 'User Not Authenticated god dammit');
+  }
+  req.auth = {
+            id: req.user.id
+        };
 
-// app.post('/api/users', function(req, res, next) {
-//   Users.create({
-//     email: req.body.username,
-//     password: req.body.password,
-//     firstname: req.body.firstname,
-//     lastname: req.body.lastname
-//   }).then(user => {
-//     res.json(user)
-//   });
-// });
-
-//log in user
-
-
+        next();
+    }, generateToken, sendToken);
 
 //ideas
 
