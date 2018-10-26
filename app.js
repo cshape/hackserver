@@ -141,6 +141,18 @@ app.post('/api/ideas', function(req, res, next) {
   });
 });
 
+//edit idea
+
+app.put('/api/idea/:id', function(req, res, next) {
+  Ideas.findByIdAndUpdate(req.params.id,
+  {$set: req.body}).then(idea => {
+    res.json(idea)
+    console.log("idea updated");
+  });
+});
+
+//delete ideas
+
 app.delete('/api/idea/:id', function(req, res) {
   Ideas.deleteOne({ _id: req.params.id }
   , function(err) {
