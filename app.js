@@ -151,6 +151,19 @@ app.put('/api/idea/:id', function(req, res, next) {
   });
 });
 
+//post comment
+
+app.post('/api/idea:id', function(req, res, next) {
+  Ideas.findOneAndUpdate({ 'id': req.params.id }, {
+    '$push': {
+      comments: req.body
+    }
+  }).then(comment => {
+    res.json(comment);
+    console.log("comment posted");
+  })
+});
+
 //delete ideas
 
 app.delete('/api/idea/:id', function(req, res) {

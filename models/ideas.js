@@ -8,8 +8,12 @@ var IdeaSchema = new Schema({
   name: String,
   leader: String,
   description: String,
-  members: [{ type: Schema.Types.ObjectId, ref: 'users' }],
-  comments: String,
+  members: [{ member: String }],
+  comments: [{
+  				author: String,
+  				text: String,
+  				date: Date
+  			}],
   votes: Number,
 });
 
