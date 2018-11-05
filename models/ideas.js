@@ -8,7 +8,10 @@ var IdeaSchema = new Schema({
   name: String,
   leader: String,
   description: String,
-  members: [{ member: String }],
+  members: [{ name: String,
+              role: String,
+              leader: Boolean
+        }],
   comments: [{
   				author: String,
   				text: String,
