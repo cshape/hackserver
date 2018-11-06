@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
 var passport = require('passport');
 var Strategy = require('passport-google-oauth20').Strategy;
 var cors = require('cors');
