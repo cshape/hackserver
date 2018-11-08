@@ -89,6 +89,8 @@ passport.use(new GoogleTokenStrategy({
             });
         }));
 
+//login
+
 app.post('/api/google',
   passport.authenticate('google-token', {session: false}), function(req, res, next) {
     if (!req.user) {
@@ -101,6 +103,24 @@ app.post('/api/google',
 
         next();
     }, generateToken, sendToken);
+
+//already logged in login auth from token
+
+app.post('/api/google/auth', function(req, res) {
+  console.log("hello");
+  var token = req.body.token;
+  console.log(token);
+    if (!token) {
+      return res.status(401).json({message: 'Must pass token'})
+    }
+      Users.findById(req.body.id, function(err, user) {
+        console.log(user.fullName)
+        res.setHeader('user-id', user._id);
+        res.setHeader('user-name', user.fullName);
+        res.setHeader('user-email', user.email);
+        return res.status(200).send(JSON.stringify(user));
+  });
+});
 
 //ideas
 
