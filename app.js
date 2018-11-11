@@ -147,6 +147,24 @@ app.get('/api/ideas', function(req, res) {
     // });
   });
 
+  //delete member
+
+  app.post('/api/ideas/members/:id', function(req, res) {
+    var input = JSON.parse(JSON.stringify(req.body));
+    console.log(input);
+
+    var IdeaId = req.params.id;
+    var memberId = input.deletionId;
+     Ideas.findByIdAndUpdate(IdeaId,
+            
+            {$pull: {members: {_id: memberId}}},
+            function(err, data){
+               if(err) return err;
+               res.send({data:data});
+               console.log(req.body);
+        });
+    })
+
 //post new idea
 
 app.post('/api/ideas', function(req, res, next) {
@@ -167,6 +185,7 @@ app.put('/api/idea/:id', function(req, res, next) {
   {$set: req.body}).then(idea => {
     res.json(idea)
     console.log("idea updated");
+    console.log(req.body);
   });
 });
 
@@ -191,8 +210,10 @@ app.delete('/api/idea/:id', function(req, res) {
   	if (err)
   		res.send("this is your goddam error: ", err);
   	console.log("idea deleted")
+    console.log(req);
   });
 });
+
 
 
 
