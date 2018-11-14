@@ -147,6 +147,33 @@ app.get('/api/ideas', function(req, res) {
     // });
   });
 
+  //like idea
+
+  app.post('/api/idea/likes/:id', function(req, res, next) {
+  console.log(req.body);
+  Ideas.findOneAndUpdate({ 'id': req.params.id }, {
+    '$push': {
+      likes: req.body
+    }
+  }).then(like => {
+    res.json(like);
+    console.log("idea liked");
+  })
+});
+
+  app.post('/api/idea:id', function(req, res, next) {
+  Ideas.findOneAndUpdate({ 'id': req.params.id }, {
+    '$push': {
+      comments: req.body
+    }
+  }).then(comment => {
+    res.json(comment);
+    console.log("comment posted");
+  })
+});
+
+
+
   //delete member
 
   app.post('/api/ideas/members/:id', function(req, res) {
@@ -191,16 +218,16 @@ app.put('/api/idea/:id', function(req, res, next) {
 
 //post comment
 
-app.post('/api/idea:id', function(req, res, next) {
-  Ideas.findOneAndUpdate({ 'id': req.params.id }, {
-    '$push': {
-      comments: req.body
-    }
-  }).then(comment => {
-    res.json(comment);
-    console.log("comment posted");
-  })
-});
+// app.post('/api/idea:id', function(req, res, next) {
+//   Ideas.findOneAndUpdate({ 'id': req.params.id }, {
+//     '$push': {
+//       comments: req.body
+//     }
+//   }).then(comment => {
+//     res.json(comment);
+//     console.log("comment posted");
+//   })
+// });
 
 //delete ideas
 

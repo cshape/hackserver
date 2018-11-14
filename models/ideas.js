@@ -16,7 +16,10 @@ var IdeaSchema = new Schema({
   				text: String,
   				date: Date
   			}],
-  likes: Number,
+  likes: [{
+    user: String,
+    date: Date
+  }]
 });
 
 
