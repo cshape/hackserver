@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var IdeaSchema = new Schema({
+  deleted: Boolean,
   name: String,
   leader: String,
   description: String,

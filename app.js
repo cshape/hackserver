@@ -125,26 +125,22 @@ app.post('/api/google/auth', function(req, res) {
 //ideas
 
 app.get('/api/ideas', function(req, res) {
-  Ideas.find({}).then(eachOne => {
-    res.json(eachOne);
+   Ideas.find({ 
+    deleted: false
+}).then(ideas => {
+    res.json(ideas);
     })
   });
 
-  app.get('/api/idea/:id', function(req, res) {
-    console.log(req.params.id)
-    // idea = Ideas.findById(req.params.id);
-    // res.json(idea);
+//single idea
 
-    Ideas.findById(req.params.id).exec(function(err, Ideas){
-      res.send(Ideas);
+app.get('/api/idea/:id', function(req, res) {
+    console.log(req.params.id);
+    let ideaQuery = Ideas.findById(req.params.id);
+
+    ideaQuery.where('deleted').eq(false).exec(function(err, idea){
+      res.send(idea);
     });
-
-    // Ideas.findById(req.params).then(idea => {
-    //   res.json(idea);
-    //   });
-    //   .catch(function () {
-    //     console.log("Promise Rejected");
-    // });
   });
 
   // like idea
@@ -180,7 +176,8 @@ app.post('/api/ideas', function(req, res, next) {
     name: req.body.name,
     leader: req.body.leader,
     description: req.body.description,
-    id: req.body.id
+    id: req.body.id,
+    deleted: false
   }).then(idea => {
     res.json(idea)
   });
@@ -198,15 +195,16 @@ app.put('/api/idea/:id', function(req, res, next) {
 });
 
 
+
+
 //delete ideas
 
 app.delete('/api/idea/:id', function(req, res) {
-  Ideas.deleteOne({ _id: req.params.id }
-  , function(err) {
-  	if (err)
-  		res.send("this is your goddam error: ", err);
-  	console.log("idea deleted")
-    console.log(req);
+  Ideas.findByIdAndUpdate(req.params.id,
+  {$set: { deleted: true }}).then(idea => {
+    res.json(idea)
+    console.log("idea deleted");
+    console.log(req.body);
   });
 });
 
