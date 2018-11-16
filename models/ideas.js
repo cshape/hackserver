@@ -17,11 +17,13 @@ var IdeaSchema = new Schema({
   				text: String,
   				date: Date
   			}],
-  likes: [{
-    user: String,
-    date: Date
-  }]
+  likes: Number
 });
+
+IdeaSchema.methods.like = function() {
+    this.likes++
+    return this.save()
+}
 
 
 // Virtual for idea's URL

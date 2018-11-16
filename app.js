@@ -145,8 +145,16 @@ app.get('/api/idea/:id', function(req, res) {
 
   // like idea
 
-
- 
+app.post('/api/idea/:id', function(req, res, next) {
+    Ideas.findByIdAndUpdate(req.params.id,
+      {$inc: { likes: 1 }}).then(idea => {
+        res.json(idea._id);
+        console.log("like added");
+      }).catch(err => {
+        res.send(err);
+        console.log(err);
+      })
+    })
 
 
 
