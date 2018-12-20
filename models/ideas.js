@@ -17,7 +17,8 @@ var IdeaSchema = new Schema({
   				text: String,
   				date: Date
   			}],
-  likes: Number
+  likes: Number,
+  hacksession: String
 });
 
 IdeaSchema.methods.like = function() {
