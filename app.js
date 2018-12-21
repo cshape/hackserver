@@ -74,22 +74,8 @@ app.get('/api/users', function(req, res) {
     })
   });
 
-//passport authorization
-
-
-
 //passport setup
 
-
-// passport.use(new GoogleTokenStrategy({
-//             clientID: config.googleAuth.clientID,
-//             clientSecret: config.googleAuth.clientSecret
-//         },
-//         function (accessToken, refreshToken, profile, done) {
-//             Users.upsertGoogleUser(accessToken, refreshToken, profile, function(err, user) {
-//                 return done(err, user);
-//             });
-//         }));
 
 passport.use(new GoogleTokenStrategy({
             clientID: config.googleAuth.clientID,
@@ -124,8 +110,6 @@ app.post('/api/google',
 //already logged in login auth from token
 
 app.post('/api/google/auth', function(req, res) {
-  console.log("hello");
-  console.log("friend");
   var token = req.body.token;
   console.log(token);
     if (!token) {
@@ -203,7 +187,8 @@ app.post('/api/ideas', function(req, res, next) {
     leader: req.body.leader,
     description: req.body.description,
     id: req.body.id,
-    deleted: false
+    deleted: false,
+    hacksession: req.body.hacksession
   }).then(idea => {
     res.json(idea)
   });
@@ -223,7 +208,7 @@ app.put('/api/idea/:id', function(req, res, next) {
 
 
 
-//delete ideas
+//delete idea
 
 app.delete('/api/idea/:id', function(req, res) {
   Ideas.findByIdAndUpdate(req.params.id,
