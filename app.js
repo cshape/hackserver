@@ -36,10 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // Set up default mongoose connection
 
-// var mongoDB = process.env.MONGO_SECRETS;
-
-console.log("hello");
-var mongoDB = "mongodb://cshape:Slaveship1!@ds245082.mlab.com:45082/hackvoting";
+var mongoDB = process.env.MONGO_SECRETS;
 
 
 
