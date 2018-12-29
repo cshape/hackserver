@@ -189,6 +189,7 @@ app.post('/api/ideas', function(req, res, next) {
     leader: req.body.leader,
     description: req.body.description,
     id: req.body.id,
+    members: req.body.members,
     deleted: false,
     hacksession: req.body.hacksession
   }).then(idea => {
