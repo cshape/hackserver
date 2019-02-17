@@ -78,26 +78,39 @@ app.get('/api/users', function(req, res) {
 
 //passport setup
 
+//limiting to certain emails
+
+// passport.use(new GoogleTokenStrategy({
+//             clientID: config.googleAuth.clientID,
+//             clientSecret: config.googleAuth.clientSecret
+// }, function(accessToken, refreshToken, profile, done){
+//   if (profile._json.hd === "clio.com"){
+//     console.log(profile);
+//     Users.upsertGoogleUser(accessToken, refreshToken, profile, function(err, user) {
+//       return done(err, user)
+//     })
+//   } else {
+//     return done(err, console.log("bad email probably"))
+//   }
+// }));
+
+//not limiting to certain emails
 
 passport.use(new GoogleTokenStrategy({
             clientID: config.googleAuth.clientID,
             clientSecret: config.googleAuth.clientSecret
 }, function(accessToken, refreshToken, profile, done){
-  if (profile._json.hd === "clio.com"){
     console.log(profile);
     Users.upsertGoogleUser(accessToken, refreshToken, profile, function(err, user) {
       return done(err, user)
     })
-  } else {
-    return done(err, console.log("bad email probably"))
-  }
 }));
 
 //login
 
 app.post('/api/google',
   passport.authenticate('google-token', 
-    {session: false, domain: 'clio.com'}), function(req, res, next) {
+    {session: false}), function(req, res, next) {
     if (!req.user) {
       console.log("some fuckin error");
       return res.send(401, 'User Not Authenticated god dammit');
