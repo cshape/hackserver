@@ -36,11 +36,17 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // Set up default mongoose connection
 
-var mongoDB = process.env.MONGO_SECRETS;
+//mlabs
+
+// var mongoDB = process.env.MONGO_SECRETS;
+// mongoose.connect(mongoDB, { useNewUrlParser: true});
+
+//atlas
+
+var atlas = "mongodb+srv://cshape:Slaveship1!@dugudata.z0s5k.mongodb.net/hackvoting?retryWrites=true&w=majority"
+mongoose.connect(atlas, { useNewUrlParser: true});
 
 
-
-mongoose.connect(mongoDB, { useNewUrlParser: true});
 
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
