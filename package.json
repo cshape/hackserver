@@ -2,6 +2,9 @@
   "name": "hackserver",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "start": "node app.js",
     "build": "react-scripts build",
