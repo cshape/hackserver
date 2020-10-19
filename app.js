@@ -41,7 +41,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 // var mongoDB = process.env.MONGO_SECRETS;
 // mongoose.connect(mongoDB, { useNewUrlParser: true});
 
-//atlas test
+//atlas
 
 var atlas = "mongodb+srv://cshape:Slaveship1!@dugudata.z0s5k.mongodb.net/hackvoting?retryWrites=true&w=majority"
 mongoose.connect(atlas, { useNewUrlParser: true});
