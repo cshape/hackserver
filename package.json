@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": "12.x"
+    "node": "10.x"
   },
   "scripts": {
     "start": "node app.js",
@@ -30,6 +30,7 @@
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0",
     "passport-google-token": "^0.1.2",
+    "react-scripts": "^4.0.2",
     "request": "^2.88.0",
     "time-ago": "^0.2.1"
   },
